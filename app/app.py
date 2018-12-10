@@ -5,10 +5,12 @@ import os
 import flask
 import iso8601
 import requests
+from flask_cacheify import init_cacheify
 
 
 app = flask.Flask(__name__, template_folder='templates')
 app.debug = os.environ.get('DEBUG', False)
+app.cache = init_cacheify(app)
 mixcloud_user_url = os.environ.get('MIXCLOUD_USER_URL', 'https://api.mixcloud.com/riffwizzards/')
 mixcloud_cast_url = os.environ.get('MIXCLOUD_CAST_URL', 'https://api.mixcloud.com/riffwizzards/cloudcasts/')
 
@@ -19,6 +21,7 @@ def parse_8601_2822(value):
 
 
 @app.route('/feed.rss')
+@app.cache.cached(timeout=1 if app.debug else 60 * 15)
 def feed():
     rss_xml = flask.render_template('rss.xml',
                                     items=requests.get(mixcloud_cast_url).json()['data'],
