@@ -11,9 +11,15 @@ from flask_cacheify import init_cacheify
 app = flask.Flask(__name__, template_folder='templates')
 app.debug = os.environ.get('DEBUG', False)
 app.cache = init_cacheify(app)
-app.timeout_mins = os.environ.get('CACHE_TIMEOUT_MINS', 10)
+app.timeout_mins = int(os.environ.get('CACHE_TIMEOUT_MINS', 10))
+app.download_url = os.environ.get('MIXCLOUD_DOWNLOAD_URL', '')
 mixcloud_user_url = os.environ.get('MIXCLOUD_USER_URL', 'https://api.mixcloud.com/riffwizzards/')
 mixcloud_cast_url = os.environ.get('MIXCLOUD_CAST_URL', 'https://api.mixcloud.com/riffwizzards/cloudcasts/')
+
+
+@app.template_filter('get_full_download_url')
+def episode_url(value):
+    return f"{app.download_url}{value}"
 
 
 @app.template_filter('parse_date')

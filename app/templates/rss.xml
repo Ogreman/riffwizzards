@@ -23,7 +23,7 @@
     <item>
       <title>{{ item.name }}</title>
       <category domain="{{ item.user.url }}">{{ item.user.name }}</category>
-      <link>http://download.mixcloud-downloader.com/d/mixcloud{{ item.key }}</link>
+      <link>{{ item.key|get_full_download_url }}</link>
       <guid>{{ item.url }} </guid>
       <description>{{ item.name }}</description>
       {% for category in item.tags %}
@@ -34,7 +34,7 @@
       <itunes:explicit>yes</itunes:explicit>
       <itunes:image href="{{ item.pictures.large|replace('300x300', '1400x1400') }}" />
       <itunes:summary>{{ item.name }}</itunes:summary>
-      <enclosure url="http://download.mixcloud-downloader.com/d/mixcloud{{ item.key }}" length="{{ item.audio_length }}" type="audio/x-m4a"/>
+      <enclosure url="{{ item.key|get_full_download_url }}" length="{{ item.audio_length }}" type="audio/x-m4a"/>
     </item>
     {% endfor %}
   </channel>
