@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:atom="http://www.w3.org/2005/Atom">
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
   <channel>
     <title>Shows</title>
     <link>{{ url_for('feed', _external=True) }}</link>
@@ -9,6 +9,16 @@
     <description>The Riffwizzards : Shows</description>
     <category>Podcast</category>
     <copyright>Copyright © 2018 The Riffwizzards</copyright>
+    <language>en</language>
+    <itunes:summary>{{ user.biog }}</itunes:summary>
+    <itunes:author>{{ user.name }}</itunes:author>
+    <itunes:owner>
+      <itunes:name>The Riffwizzards</itunes:name>
+      <itunes:email>riffwizzards@gmail.com</itunes:email>
+    </itunes:owner>
+    <itunes:category text="Music" />
+    <itunes:explicit>yes</itunes:explicit>
+    <itunes:image href="{{ user.pictures.large|replace('300x300', '1400x1400') }}" />
     {% for item in items %}
     <item>
       <title>{{ item.name }}</title>
@@ -20,6 +30,11 @@
         <category>{{ category.name }}</category>
       {% endfor %}
       <pubDate>{{ item.created_time|parse_date }}</pubDate>
+      <itunes:author>{{ user.name }}</itunes:author>
+      <itunes:explicit>yes</itunes:explicit>
+      <itunes:image href="{{ item.pictures.large|replace('300x300', '1400x1400') }}" />
+      <itunes:summary>{{ item.name }}</itunes:summary>
+      <enclosure url="http://download.mixcloud-downloader.com/d/mixcloud{{ item.key }}" length="{{ item.audio_length }}" type="audio/x-m4a"/>
     </item>
     {% endfor %}
   </channel>
