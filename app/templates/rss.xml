@@ -23,7 +23,7 @@
     <item>
       <title>{{ item.name }}</title>
       <category domain="{{ item.user.url }}">{{ item.user.name }}</category>
-      <link>{{ item.url }}</link>
+      <link>http://download.mixcloud-downloader.com/d/mixcloud{{ item.key }}</link>
       <guid>{{ item.url }} </guid>
       <description>{{ item.name }}</description>
       {% for category in item.tags %}
