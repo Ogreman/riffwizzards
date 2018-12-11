@@ -15,8 +15,8 @@ app.cache = init_cacheify(app)
 app.timeout_mins = int(os.environ.get('CACHE_TIMEOUT_MINS', 10))
 app.download_url = os.environ.get('MIXCLOUD_DOWNLOAD_URL', '')
 app.max_items = int(os.environ.get('MAX_ITEMS', 10))
-mixcloud_user_url = os.environ.get('MIXCLOUD_USER_URL', 'https://api.mixcloud.com/riffwizzards/')
-mixcloud_cast_url = os.environ.get('MIXCLOUD_CAST_URL', 'https://api.mixcloud.com/riffwizzards/cloudcasts/')
+mixcloud_user_url = f"https://api.mixcloud.com/{os.environ.get('MIXCLOUD_USER', 'riffwizzards')}/"
+mixcloud_cast_url = f"https://api.mixcloud.com/{os.environ.get('MIXCLOUD_USER', 'riffwizzards')}/cloudcasts/"
 
 
 @app.template_filter('get_full_download_url')
@@ -46,7 +46,7 @@ def feed():
 
 @app.route('/')
 def index():
-    return flask.redirect('https://mixcloud.com/riffwizzards')
+    return flask.redirect(f"https://mixcloud.com/{os.environ.get('MIXCLOUD_USER', 'riffwizzards')}")
 
 
 if __name__ == "__main__":
