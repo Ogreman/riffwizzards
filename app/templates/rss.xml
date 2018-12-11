@@ -2,7 +2,7 @@
 <rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
   <channel>
     <title>{{ user.name }}</title>
-    <link>{{ url_for('feed', _external=True) }}</link>
+    <link>{{ url_for('index', _external=True) }}</link>
     <lastBuildDate>{{ now }}</lastBuildDate>
     <atom:link rel="self" type="application/rss+xml" href="{{ url_for('feed', _external=True) }}"/>
     <atom:link rel="alternate" type="text/html" href="{{ url_for('index', _external=True) }}"/>
@@ -18,23 +18,25 @@
     </itunes:owner>
     <itunes:category text="Music" />
     <itunes:explicit>yes</itunes:explicit>
-    <itunes:image href="{{ user.pictures.large|replace('300x300', '1400x1400') }}" />
+    <itunes:image href="{{ user.pictures.large|replace('https:', 'http:')|replace('300x300', '1400x1400') }}?.jpg" />
+    <itunes:complete>no</itunes:complete>
     {% for item in items %}
     <item>
       <title>{{ item.name }}</title>
+      <itunes:author>{{ user.name }}</itunes:author>
+      <itunes:summary>{{ item.name }}</itunes:summary>
+      <itunes:image href="{{ item.pictures.large|replace('https:', 'http:')|replace('300x300', '1400x1400') }}?.jpg" />
+      <enclosure url="{{ item.key|get_full_download_url }}" length="{{ item.audio_length }}" type="audio/x-m4a"/>
+      <guid>{{ item.url }} </guid>
+      <pubDate>{{ item.created_time|parse_date }}</pubDate>
+      <itunes:duration>01:30:00</itunes:duration>
+      <itunes:explicit>yes</itunes:explicit>
       <category domain="{{ item.user.url }}">{{ item.user.name }}</category>
       <link>{{ item.url }}</link>
-      <guid>{{ item.url }} </guid>
       <description>{{ item.name }}</description>
       {% for category in item.tags %}
-        <category>{{ category.name }}</category>
+      <category>{{ category.name }}</category>
       {% endfor %}
-      <pubDate>{{ item.created_time|parse_date }}</pubDate>
-      <itunes:author>{{ user.name }}</itunes:author>
-      <itunes:explicit>yes</itunes:explicit>
-      <itunes:image href="{{ item.pictures.large|replace('300x300', '1400x1400') }}" />
-      <itunes:summary>{{ item.name }}</itunes:summary>
-      <enclosure url="{{ item.key|get_full_download_url }}" length="{{ item.audio_length }}" type="audio/x-m4a"/>
     </item>
     {% endfor %}
   </channel>
