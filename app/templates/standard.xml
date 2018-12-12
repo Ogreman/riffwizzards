@@ -17,20 +17,16 @@
       <itunes:email>riffwizzards@gmail.com</itunes:email>
     </itunes:owner>
     <itunes:category text="Music" />
-    <itunes:explicit>yes</itunes:explicit>
-    <itunes:image href="{{ user.pictures.large|replace('https:', 'http:')|replace('300x300', '1400x1400') }}?.jpg" />
-    <itunes:complete>no</itunes:complete>
+    <itunes:image href="{{ user.pictures.large }}" />
     {% for item in items %}
     <item>
       <title>{{ item.name }}</title>
       <itunes:author>{{ user.name }}</itunes:author>
       <itunes:summary>{{ item.name }}</itunes:summary>
-      <itunes:image href="{{ item.pictures.large|replace('https:', 'http:')|replace('300x300', '1400x1400') }}?.jpg" />
-      <enclosure url="{{ item.key|get_full_download_url }}" length="{{ item.audio_length }}" type="audio/x-m4a"/>
+      <itunes:image href="{{ item.pictures.large }}" />
+      <enclosure url="{{ item.key|get_stream_url }}" length="{{ item.audio_length }}" type="audio/x-m4a"/>
       <guid>{{ item.url }} </guid>
       <pubDate>{{ item.created_time|parse_date }}</pubDate>
-      <itunes:duration>01:30:00</itunes:duration>
-      <itunes:explicit>yes</itunes:explicit>
       <category domain="{{ item.user.url }}">{{ item.user.name }}</category>
       <link>{{ item.url }}</link>
       <description>{{ item.name }}</description>

@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:itunes="http://www.itunes.com/dtds/podcast-1.0.dtd" xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+  <channel>
+    <title>{{ user.name }}</title>
+    <link>{{ url_for('index', _external=True) }}</link>
+    <lastBuildDate>{{ now }}</lastBuildDate>
+    <atom:link rel="self" type="application/rss+xml" href="{{ url_for('feed', _external=True) }}"/>
+    <atom:link rel="alternate" type="text/html" href="{{ url_for('index', _external=True) }}"/>
+    <description>{{ user.biog }}</description>
+    <category>Podcast</category>
+    <copyright>Copyright © 2018 The Riffwizzards</copyright>
+    <language>en</language>
+    <itunes:summary>{{ user.biog }}</itunes:summary>
+    <itunes:author>{{ user.username }}</itunes:author>
+    <itunes:owner>
+      <itunes:name>The Riffwizzards</itunes:name>
+      <itunes:email>riffwizzards@gmail.com</itunes:email>
+    </itunes:owner>
+    <itunes:category text="Music" />
+    <itunes:explicit>yes</itunes:explicit>
+    <itunes:image href="{{ user.pictures.large|itunes_compatible_image_url }}" />
+    <itunes:complete>no</itunes:complete>
+    {% for item in items %}
+    <item>
+      <title>{{ item.name }}</title>
+      <itunes:author>{{ user.name }}</itunes:author>
+      <itunes:summary>{{ item.name }}</itunes:summary>
+      <itunes:image href="{{ item.pictures.large|itunes_compatible_image_url }}" />
+      <enclosure url="{{ item.key|get_stream_url(scrape=True) }}" length="{{ item.audio_length }}" type="audio/x-m4a"/>
+      <guid>{{ item.url }} </guid>
+      <pubDate>{{ item.created_time|parse_date }}</pubDate>
+      <itunes:duration>01:30:00</itunes:duration>
+      <itunes:explicit>yes</itunes:explicit>
+      <category domain="{{ item.user.url }}">{{ item.user.name }}</category>
+      <link>{{ item.url }}</link>
+      <description>{{ item.name }}</description>
+      {% for category in item.tags %}
+      <category>{{ category.name }}</category>
+      {% endfor %}
+    </item>
+    {% endfor %}
+  </channel>
+</rss>
